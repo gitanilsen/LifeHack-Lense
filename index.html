@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeHack Lens - Creative Uses & Fun Facts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        #video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #a1a1aa;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #71717a;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #14b8a6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .prose-custom ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .prose-custom li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .prose-custom li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #14b8a6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-5xl mx-auto p-4 md:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold gradient-text">LifeHack Lens</h1>
+            <p class="text-slate-600 mt-2 text-lg">Discover clever uses for everyday things.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Camera and Controls Section -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col border border-slate-200">
+                <div id="camera-container" class="relative w-full aspect-video bg-slate-900 flex items-center justify-center text-white">
+                    <video id="video-feed" autoplay playsinline muted></video>
+                    <div id="placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                         <svg class="w-16 h-16 text-slate-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <p id="camera-status" class="text-center text-slate-400">Initializing camera...</p>
+                        <button id="retry-camera-button" class="mt-4 bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors hidden">
+                            Retry Camera
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-slate-200 space-y-4">
+                    <div>
+                        <label for="language-selector" class="block text-sm font-medium text-slate-700 mb-1">Response Language</label>
+                        <select id="language-selector" class="w-full bg-slate-100 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5">
+                            <option value="english" selected>English</option>
+                            <option value="hindi">हिंदी (Hindi)</option>
+                        </select>
+                    </div>
+                    <button id="analyze-button" class="w-full bg-teal-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75 transition-all duration-300 ease-in-out disabled:bg-slate-400 disabled:cursor-not-allowed flex items-center justify-center" disabled>
+                        <svg id="button-icon" class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.684-2.684L11.25 18l1.938-.648a3.375 3.375 0 002.684-2.684L16.25 13l.648 1.938a3.375 3.375 0 002.684 2.684L21.5 18l-1.938.648a3.375 3.375 0 00-2.684 2.684z" /></svg>
+                        <span id="button-text">Find Hacks & Facts</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Response Section -->
+            <div class="bg-white rounded-2xl shadow-lg flex flex-col border border-slate-200">
+                 <div class="p-6 border-b border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800">Creative Ideas</h2>
+                </div>
+                <div id="response-container" class="p-6 flex-grow custom-scrollbar overflow-y-auto min-h-[300px] lg:min-h-0">
+                    <!-- Loading Skeleton -->
+                    <div id="loading-skeleton" class="hidden animate-pulse">
+                        <div class="h-6 bg-slate-200 rounded w-1/3 mb-4"></div>
+                        <div class="h-4 bg-slate-200 rounded w-full mb-2"></div>
+                        <div class="h-4 bg-slate-200 rounded w-5/6 mb-4"></div>
+                        <div class="h-6 bg-slate-200 rounded w-1/3 mb-4 mt-6"></div>
+                        <div class="h-4 bg-slate-200 rounded w-full mb-2"></div>
+                        <div class="h-4 bg-slate-200 rounded w-4/5"></div>
+                    </div>
+                    <!-- Response Content -->
+                    <div id="response-content" class="prose-custom text-slate-700">
+                        <p id="initial-message">Point your camera at an object to discover clever life hacks and surprising fun facts about it!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <canvas id="canvas" class="hidden"></canvas>
+
+    <script>
+        const video = document.getElementById('video-feed');
+        const canvas = document.getElementById('canvas');
+        const analyzeButton = document.getElementById('analyze-button');
+        const buttonText = document.getElementById('button-text');
+        const buttonIcon = document.getElementById('button-icon');
+        const placeholder = document.getElementById('placeholder');
+        const cameraStatus = document.getElementById('camera-status');
+        const responseContent = document.getElementById('response-content');
+        const loadingSkeleton = document.getElementById('loading-skeleton');
+        const initialMessage = document.getElementById('initial-message');
+        const languageSelector = document.getElementById('language-selector');
+        const retryCameraButton = document.getElementById('retry-camera-button');
+
+        // --- IMPORTANT: PASTE YOUR GEMINI API KEY HERE ---
+        const API_KEY = 'AIzaSyARb6wzpVpXBEjBCdX5vYyKcWksPZxZVOw';
+        // --------------------------------------------------
+
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        
+        let stream;
+
+        async function setupCamera() {
+            // Reset status on retry
+            cameraStatus.textContent = 'Initializing camera...';
+            retryCameraButton.classList.add('hidden');
+            
+            try {
+                if (stream) stream.getTracks().forEach(track => track.stop());
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                video.addEventListener('loadedmetadata', () => {
+                    placeholder.classList.add('hidden');
+                    analyzeButton.disabled = false;
+                });
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                cameraStatus.innerHTML = `<strong>Camera access denied.</strong><br>Please allow camera permission in your browser's site settings (look for a lock icon in the address bar) and try again.`;
+                analyzeButton.disabled = true;
+                retryCameraButton.classList.remove('hidden');
+            }
+        }
+
+        async function analyzeFrame() {
+            if (API_KEY === 'YOUR_API_KEY_HERE') {
+                responseContent.innerHTML = `<p class="text-red-500 font-semibold">Configuration Error: Please paste your Gemini API Key into the 'lifehack-lens.html' file to enable analysis.</p>`;
+                return;
+            }
+
+            setLoadingState(true);
+
+            const base64ImageData = captureFrameAsBase64();
+            
+            const selectedLanguage = languageSelector.value;
+            const languageInstruction = selectedLanguage === 'hindi' ? "\n\nIMPORTANT: The entire response, including titles and all text, MUST be in Hindi." : "";
+
+            const systemPrompt = `You are 'LifeHack Lens', a witty and creative AI assistant. Your goal is to find clever uses and fun facts for everyday objects. Analyze the object in the image and provide two distinct sections: '💡 Life Hacks' and '🤣 Funny Facts'.
+- For 'Life Hacks', give 2-3 practical, creative, and genuinely useful tips for the object.
+- For 'Funny Facts', provide 2-3 genuinely amusing or surprising trivia points.
+Format your response using markdown. Start each section with its corresponding emoji and title in bold. Use bullet points for each hack and fact. For example:
+💡 **Life Hacks**
+* Use it to...
+* Create a...
+
+🤣 **Funny Facts**
+* This object was once...
+* Believe it or not...${languageInstruction}`;
+
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: systemPrompt },
+                        { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
+                    ]
+                }]
+            };
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.json();
+                    throw new Error(`API Error: ${response.status}. ${errorBody.error?.message || ''}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates[0].content.parts[0].text) {
+                    const rawText = result.candidates[0].content.parts[0].text;
+                    displayFormattedResponse(rawText);
+                } else {
+                    responseContent.innerHTML = `<p class="text-amber-600">Could not get a valid response from the AI. The image might be unclear. Please try again.</p>`;
+                }
+
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                responseContent.innerHTML = `<p class="text-red-500 font-semibold">An error occurred. Please check the console and ensure your API key is valid.</p>`;
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                analyzeButton.disabled = true;
+                buttonText.textContent = 'Thinking...';
+                buttonIcon.innerHTML = `<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                if (initialMessage) initialMessage.classList.add('hidden');
+                responseContent.innerHTML = '';
+                loadingSkeleton.classList.remove('hidden');
+            } else {
+                analyzeButton.disabled = false;
+                buttonText.textContent = 'Find Hacks & Facts';
+                buttonIcon.innerHTML = `<svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.684-2.684L11.25 18l1.938-.648a3.375 3.375 0 002.684-2.684L16.25 13l.648 1.938a3.375 3.375 0 002.684 2.684L21.5 18l-1.938.648a3.375 3.375 0 00-2.684 2.684z" /></svg>`;
+                loadingSkeleton.classList.add('hidden');
+            }
+        }
+
+        function captureFrameAsBase64() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            return canvas.toDataURL('image/jpeg').split(',')[1];
+        }
+
+        function displayFormattedResponse(text) {
+            let html = text
+                .replace(/\*\*(.*?)\*\*/g, '<h3 class="text-xl font-bold text-slate-800 mt-6 mb-3">$1</h3>') // Bolding for titles
+                .replace(/^\* (.*$)/gm, '<li>$1</li>') // List items
+                .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>'); // Wrap list items in ul
+            
+            responseContent.innerHTML = html;
+        }
+
+        analyzeButton.addEventListener('click', analyzeFrame);
+        retryCameraButton.addEventListener('click', setupCamera);
+        window.addEventListener('load', setupCamera);
+
+    </script>
+</body>
+</html>
+
